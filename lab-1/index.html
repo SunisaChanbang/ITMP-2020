@@ -8,21 +8,20 @@
 </head>
 <body class="paper">
 	<div id="app">
-		<input type="number" v-model="nunber">
+		<input type="number" v-model="number">
 		<div class="space"></div>
-		<h4 v-for="num in 12">{{number}} x {{num}} = {{number*num}}</h4>
+		<h4 class="row" v-for="num in 12">{{number}} x {{num}} = {{number*num}}</h4>
 	</div>
 
 	<script>
 		let app = new Vue({
 			el: '#app',
-			data: {
-				number : 2
-			},
-			methods: {
-
+			data : {
+					number: '2'
+		
+				
 			}
-		})
+		});
 	</script>
 </body>
 </html>
