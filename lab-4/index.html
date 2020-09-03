@@ -53,7 +53,34 @@
 				l:30,//ความสว่างของสีทั่วไปในรอบนี้
 			},
 			methods: {
+				check: function(e){
+					if(this.time>0){
+						if(e == true){
+							this.correct()
+							this.l -= 2
+						}
+						else{
+							this.fail()
+						}
+					}
+				},
+				correct: function(){
+					this.score += 1
+					this.row += 1
+					this.h = rand(0,330)
+					this.pick = rand(1,this.row*this.row)
 
+
+					console.log("Sharp eyes! Score +1")
+				},
+				fail: function(){
+					this.score -= 1
+					this.time -= 1
+					this.h = rand(0,330)
+					this.pick = rand(1,this.row*this.row)
+
+					console.log("Too bad! Score -1")
+				}
 			}
 		})
 		//ทำให้แคนวาสมี --picklight ตามที่กำหนดไว้ข้างบนนี้
