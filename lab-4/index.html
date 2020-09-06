@@ -1,98 +1,113 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Color Game - Multimedia Programming 2563 ITKMITL</title>
 	<link rel="stylesheet" type="text/css" href="../src/reset.css">
 	<link rel="stylesheet" type="text/css" href="lab.css">
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
+
 <body>
 	<div id="canvas">
 		<section id="canvas_header">
 			<div>
-				เหลือเวลา 10 วินาที
+				เหลือเวลา {{time}} วินาที
 			</div>
+
 		</section>
 		<section id="canvas_main">
 			<main>
-				<a-dot></a-dot>
-				<a-dot></a-dot>
-				<a-dot></a-dot>
-				<a-dot></a-dot>
-				<a-dot></a-dot>
-				<a-dot style="--l:80%"></a-dot>
-				<a-dot data-pick="true"></a-dot>
-				<a-dot></a-dot>
-				<a-dot></a-dot>
+				<a-dot v-for='i in row*row' :style='{
+				"--row":row,
+				"--h":h,
+				"--l":l + "%",
+				}' :data-pick="i == pick"
+				 @click="check(i)"></a-dot> <!-- "--row" : "row" --row คือเป็นตัวแปรจาก css ส่วน row คือตัวแรปจาก vue -->
+
+				<!--style='--row:2;' มันไม่ควรเป็นค่า set เอง ควรเป็นค่าที่มาจาก vue โดยใส่ :style='--row:2;' เพื่แให้เป็น javascript-->
+
+				<!-- <a-dot style="--l:80%"></a-dot> -->
+				<!-- <a-dot data-pick="true"></a-dot> -->
+
+
 			</main>
 		</section>
 		<section id="canvas_footer">
 			<div>
-				0 คะแนน
+				{{score}} คะแนน
 			</div>
 		</section>
 	</div>
 
 	<script>
-		let picklight = "20%" //เลือกว่ารอบนี้ อันพิเศษจะมีความสว่าง 20%
-		document.registerElement('a-dot') //ให้ vue รู้จัก a-dot
+		let picklight = "80%" //อันที่พิเศษจะสว่าง 20%
 
-		function rand(start,stop){//สร้างฟังก์ชัน random ไว้ใช้
-			let shift = (stop-start)+1
-			return Math.floor(Math.random()*100%shift)+start
+		function rand(start, stop) {//สร้างฟังก์ชัน random ไว้ใช้
+			let shift = (stop - start) + 1
+			return Math.floor(Math.random() * 100 % shift) + start
 		}
 
+		//Vue.component("a-dot");
 		let app = new Vue({
-			el:'#canvas',
-			data:{
-				row:2, //จำนวนแถวที่จะมีในรอบนี้
-				h:330, // hue ในรอบนี้
-				time:10, //เวลาเริ่มต้น
-				score:0, //คะแนนเริ่มต้น
-				pick:1, //หมายเลขวงกลมที่จะสีแตกต่างจากก้อนอื่นๆ
-				l:30,//ความสว่างของสีทั่วไปในรอบนี้
+			el: '#canvas',
+			data: {
+				row: 2, //จำนวนแถว
+				h: 250, // hue ในรอบนี้
+				time: 20, //เวลาเริ่มต้น
+				score: 0, //คะแนนเริ่มต้น
+				pick: 1, //หมายเลขวงกลมที่สีต่างกัน
+				l: 50,//ความสว่างของสี
+
 			},
 			methods: {
-				check: function(e){
-					if(this.time>0){
-						if(e == true){
-							this.correct()
-							this.l -= 2
-						}
-						else{
-							this.fail()
+				check: function (e) { //เก็บค่า e เข้ามา
+					console.log(e)
+					this.h = rand(1, 360)
+					if (e == this.pick) {
+						this.correct();
+						this.time += 2
+					}
+					else if (e != this.pick) {
+						this.time -= 5
+						if (this.time <= 0) {
+							alert('Time\'s up!')
+							this.time = 0
+
 						}
 					}
+					else {
+
+						this.pick = rand(1, this.row * this.row);
+
+					}
 				},
-				correct: function(){
-					this.score += 1
-					this.row += 1
-					this.h = rand(0,330)
-					this.pick = rand(1,this.row*this.row)
 
 
-					console.log("Sharp eyes! Score +1")
+				correct: function () {
+					//เข้าด่านต่อไป
+					this.row += 1;
+					this.pick = rand(1, this.row * this.row);
+					this.score += 1;
+					console.log("Correct!");
+
 				},
-				fail: function(){
-					this.score -= 1
-					this.time -= 1
-					this.h = rand(0,330)
-					this.pick = rand(1,this.row*this.row)
 
-					console.log("Too bad! Score -1")
-				}
-			}
+			},
+
 		})
 		//ทำให้แคนวาสมี --picklight ตามที่กำหนดไว้ข้างบนนี้
-		document.querySelector('#canvas').style.setProperty('--picklight',picklight);
-		
+		document.querySelector('#canvas').style.setProperty('--picklight', picklight); //แก้ Property --picklight ให้มีค่าเท่ากับตัวแปร picklight
+
 		let counter = setInterval(()=>{
 			if (app.time>0) {
 				app.time--
 			}else{
 				clearInterval(counter)
 			}
-		},1000);
+		},1000); //set เวลา
+
 	</script>
 </body>
+
 </html>
