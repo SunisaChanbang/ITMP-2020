@@ -79,13 +79,16 @@
 				turn: function (x){
 					let count = this.fruits.length
 					for(let f in this.fruits){
+						//run 
 						let run = this.fruits[f].run
-						if (run) {
-							this.fruits[f].pst = this.fruits[f].pst+1
+						if (run){
+							this.fruits[f].pst = this.fruits[f].pst + this.fruits[f].step
 						}
+
 						if (this.fruits[f].pst == 10 && this.isRightArrow == 1) {
                             this.fruits[f].step = 3
                         }
+						//score
 						if ((this.fruits[f].pst == 12 || this.fruits[f].pst == 16) && this.fruits[f].run == true) {
                             if (this.fruits[f].type == 'red' && this.fruits[f].pst == 12) {
                                 this.score++
@@ -93,20 +96,30 @@
 							else if (this.fruits[f].type == 'yellow' && this.fruits[f].pst == 16) {
                                 this.score++
                             }
-							let spawn = rand(0,1)
+                            this.fruits[f].run = false
+                        }
+						
+						//end game
+						if (this.fruits[f].pst == 16 && this.fruits[f].type == 'red'){
+								clearInterval(playing)
+								this.play = false
+						}
+						else if (this.fruits[f].pst == 12 && this.fruits[f].type == 'yellow'){
+								clearInterval(playing)
+								this.play = false
+						}
+						//new  fruit
+						let spawn = rand(1, 10) % 3 == 0
 							if(spawn == 1){
 								newfruit = rand(0,1)
 								newfruitId = 3
 								if(newfruit == 1){
-									this.fruits.push({id:newfruitId,type:11,pst:1,run:true,step:1})
+									this.fruits.push({id:newfruitId,type:'red',pst:1,run:true,step:1})
 								}else{
-									this.fruits.push({id:newfruitId,type:16,pst:1,run:true,step:1})
+									this.fruits.push({id:newfruitId,type:'yellow',pst:1,run:true,step:1})
 								}
 								newfruitId++;
 							}
-                            this.fruits[f].run = false
-                        }
-						
 						console.log()
 					}
 				}
