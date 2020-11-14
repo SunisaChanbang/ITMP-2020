@@ -2,29 +2,33 @@
 <html>
 <head>
 	<title>The Members - ITKMITL Multimedia Programming 2563</title>
-
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<link rel="stylesheet" type="text/css" href="lab.css">
 </head>
 <body>
 	<div id="app">
-		<h1>About</h1>
-		<h3>Username : {{person.username}}</h3>
-		<h3>Name : {{person.name}}</h3>
-		<h3>E-mail : {{person.email}}</h3>
-		<h3>Website : {{person.website}}</h3>
-		<h3>Company : {{person.company.name}}</h3>
-
-		<button @click="islookgood">หน้าตาดีหรือไม่?</button>
-		<h2>{{yesno.answer}}</h2>
-		<img :src="yesno.image" alt="">
-
+		<div class="row">
+			<div class="col col-6">
+				<h1>About</h1>
+				<h3>Username : {{person.username}}</h3>
+				<h3>Name : {{person.name}}</h3>
+				<h3>E-mail : {{person.email}}</h3>
+				<h3>Website : {{person.website}}</h3>
+				<h3>Company : {{person.company.name}}</h3>
+			</div>
+			<div class="col col-3">
+				<button @click="islookgood" class="button">หน้าตาดีหรือไม่?</button>
+				<d1>{{yesno.answer}}</d1>
+				<img :src="yesno.image" alt="" class="ans">
+			</div>
+		</div>
 		<h1>Users</h1>
-		<h2 v-for="u in users" :data-id="u.id" @click="viewBio(u)">
-			<img :src="`https://picsum.photos/id/5${u.id}/100/100`" alt="">
-			{{u.username}}
-		</h2>
-	
+			<h2 v-for="u in users" :data-id="u.id" @click="viewBio(u)">
+				<img :src="`https://picsum.photos/id/5${u.id}/100/100`" alt="" class="img">
+				{{u.username}}
+			</h2>
 	</div>
 
 	<script>
